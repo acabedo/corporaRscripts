@@ -7,19 +7,21 @@ library(data.table)
 library(xfun)
 library(readxl)
 
-# PASO 1. Copiar los ficheros en la carpeta revisión
+# Note: change PATH with your own computer path. Probably, it wall vary a little if you use Windows or Mac.
 
-current_folder <- "/Users/adriancabedonebot/Library/Mobile Documents/com~apple~CloudDocs/corpus/Ameresco/07_09_2020/originales"
-new_folder <- "/Users/adriancabedonebot/Library/Mobile Documents/com~apple~CloudDocs/corpus/Ameresco/07_09_2020/revision"
+# Step 1. Copy files on revision folder. 
+
+current_folder <- "/PATH/originales"
+new_folder <- "/PATH/revision"
 list_of_files <- list.files(current_folder, ".eaf$") 
 file.copy(file.path(current_folder,list_of_files), new_folder)
 
-# PASO 2. Añadir la línea de DTD nueva (se realiza luego la revisión con Oxygen).
+# Step 2. ADD new DTD line (revision can be make it afterwars with Oxygen XML editor).
 
 
 gsub_dir(dir = new_folder, pattern = "<ANNOTATION_DOCUMENT AUTHOR=", replacement = "<!--<ANNOTATION_DOCUMENT AUTHOR=")
 gsub_dir(dir = new_folder, pattern = "EAFv3.0.xsd\">", replacement = "EAFv3.0.xsd\"><!--><ANNOTATION_DOCUMENT>")
-gsub_dir(dir = new_folder, pattern = "<!--<ANNOTATION_DOCUMENT AUTHOR=", replacement = "<!DOCTYPE ANNOTATION_DOCUMENT SYSTEM \"/Users/adriancabedonebot/Library/Mobile Documents/com~apple~CloudDocs/corpus/Ameresco/anotaciones.dtd\">
+gsub_dir(dir = new_folder, pattern = "<!--<ANNOTATION_DOCUMENT AUTHOR=", replacement = "<!DOCTYPE ANNOTATION_DOCUMENT SYSTEM \"/PATH/anotaciones.dtd\">
 <!--<ANNOTATION_DOCUMENT AUTHOR=")
 gsub_dir(dir = new_folder, pattern = "&lt;", replacement = "<")
 gsub_dir(dir = new_folder, pattern = "&gt;", replacement = ">")
@@ -28,10 +30,10 @@ gsub_dir(dir = new_folder, pattern = "<anónimo", replacement = "<anonimo")
 gsub_dir(dir = new_folder, pattern = "</énfasis", replacement = "</enfasis")
 gsub_dir(dir = new_folder, pattern = "</anónimo", replacement = "</anonimo")
 
-# PASO 3. Copiar ficheros revisados a la carpeta final
+# Step 3. Copy reviewed file in an ending folder
 
-current_folder1 <- "/Users/adriancabedonebot/Library/Mobile Documents/com~apple~CloudDocs/corpus/Ameresco/07_09_2020/revision"
-new_folder1 <- "/Users/adriancabedonebot/Library/Mobile Documents/com~apple~CloudDocs/corpus/Ameresco/07_09_2020/corpus"
+current_folder1 <- "/PATH/revision"
+new_folder1 <- "/PATH/corpus"
 list_of_files <- list.files(current_folder1, ".eaf$") 
 file.copy(file.path(current_folder1,list_of_files), new_folder1)
 gsub_dir(dir = new_folder1, pattern = "<enfasis>", replacement = "&lt;enfasis&gt;")
@@ -66,5 +68,5 @@ gsub_dir(dir = new_folder1, pattern = "/\">", replacement = "/\"&gt;")
 gsub_dir(dir = new_folder1, pattern = "<!--<ANNOTATION_DOCUMENT AUTHOR=", replacement = "<ANNOTATION_DOCUMENT AUTHOR=")
 gsub_dir(dir = new_folder1, pattern = "<!-->", replacement = "")
 gsub_dir(dir = new_folder1, pattern = "EAFv3.0.xsd\"><!--><ANNOTATION_DOCUMENT>", replacement = "EAFv3.0.xsd\">")
-gsub_dir(dir = new_folder1, pattern = "<!DOCTYPE ANNOTATION_DOCUMENT SYSTEM \"/Users/adriancabedonebot/Library/Mobile Documents/com~apple~CloudDocs/corpus/Ameresco/anotaciones.dtd\">", replacement = "")
+gsub_dir(dir = new_folder1, pattern = "<!DOCTYPE ANNOTATION_DOCUMENT SYSTEM \"/PATH/anotaciones.dtd\">", replacement = "")
 gsub_dir(dir = new_folder1, pattern = "EAFv3.0.xsd\"><ANNOTATION_DOCUMENT>", replacement = "EAFv3.0.xsd\">")
